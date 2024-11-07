@@ -1,0 +1,55 @@
+﻿
+
+
+img {
+    object-fit: cover;
+}
+
+.hero {
+    height: 750px;
+}
+
+.products {
+    height: 300px;
+    width: 300px;
+}
+
+.btn-links {
+    color: rgba(0,0,0,.5);
+}
+
+.btn-links:hover {
+    text-decoration: underline;
+}
+
+.btn2 {
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+.button {
+    padding: 0 .75rem;
+    display: inline-block;
+}
+
+h6 {
+    line-height: 1.5;
+}
+
+/* Style the scrollbar itself */
+::-webkit-scrollbar {
+    width: 8px; /* Set the width of the vertical scrollbar */
+    height: 8px; /* Set the height of the horizontal scrollbar */
+}
+
+/* Style the scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+    background-color: darkgrey; /* Set the color of the thumb */
+    border-radius: 10px; /* Make the thumb rounded */
+}
+
+/* Style the scrollbar track (the part the thumb moves along) */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Set the track color */
+    border-radius: 10px; /* Make the track rounded */
+}

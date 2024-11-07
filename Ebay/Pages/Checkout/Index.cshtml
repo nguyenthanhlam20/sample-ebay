@@ -1,0 +1,131 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity
+@using Ebay.Models
+@model Ebay.Pages.Checkout.IndexModel
+@{
+    ViewData["Title"] = "Product";
+    Layout = "_Layout";
+}
+
+<div class="p-3" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; border: none;">
+    <h3 class="text-center">Complete Your Order</h3>
+    <form method="post">
+        <div class="w-100">
+            <div class="row mb-2">
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.Date">Purchased Date</span> <br />
+                    <span class="badge badge-info">@DateTime.Now.ToString("MM/dd/yyyy hhmm tt")</span>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.FirstName">First Name</span>
+                    <input class="form-control" asp-for="Input!.FirstName" type="text" placeholder="Please enter your first name" />
+                    <span class="text-danger" asp-validation-for="Input!.FirstName"></span>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.LastName">Last Name</span>
+                    <input class="form-control" class="form-control" asp-for="Input!.LastName" type="text" placeholder="Please enter your last name">
+                    <span class="text-danger" asp-validation-for="Input!.LastName"></span>
+
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.Address">Address</span>
+                    <input class="form-control" asp-for="Input!.Address" type="text" placeholder="Please enter your address">
+                    <span class="text-danger" asp-validation-for="Input!.Address" ></span>
+
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.Address2">Address 2</span>
+                    <input class="form-control" asp-for="Input!.Address2" type="text" placeholder="Please enter your other address">
+                    <span class="text-danger" asp-validation-for="Input!.Address2" ></span>
+
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.City">City</span>
+                    <input class="form-control" asp-for="Input!.City" type="text" placeholder="Please enter your city">
+                    <span class="text-danger" asp-validation-for="Input!.City" ></span>
+
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.State">State</span>
+                    <select asp-for="Input.State" data-live-search="true" data-size="5" class="selectpicker show-tick form-control">
+                        <option>AL</option>
+                        <option>AK</option>
+                        <option>AZ</option>
+                        <option>AR</option>
+                        <option>CA</option>
+                        <option>CO</option>
+                        <option>CT</option>
+                        <option>DE</option>
+                        <option>FL</option>
+                        <option>GA</option>
+                        <option>HI</option>
+                        <option>Id</option>
+                        <option>IL</option>
+                        <option>IN</option>
+                        <option>IA</option>
+                        <option>KS</option>
+                        <option>KY</option>
+                        <option>LA</option>
+                        <option>ME</option>
+                        <option>MD</option>
+                        <option>MA</option>
+                        <option>MI</option>
+                        <option>MN</option>
+                        <option>MS</option>
+                        <option>MO</option>
+                        <option>MT</option>
+                        <option>NE</option>
+                        <option>NV</option>
+                        <option>NH</option>
+                        <option>NJ</option>
+                        <option>NM</option>
+                        <option>NY</option>
+                        <option>NC</option>
+                        <option>ND</option>
+                        <option>OH</option>
+                        <option>OK</option>
+                        <option>OR</option>
+                        <option>PA</option>
+                        <option>RI</option>
+                        <option>SC</option>
+                        <option>SD</option>
+                        <option>TN</option>
+                        <option>TX</option>
+                        <option>UT</option>
+                        <option>VT</option>
+                        <option>VA</option>
+                        <option>WA</option>
+                        <option>WV</option>
+                        <option>WI</option>
+                        <option>WY</option>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <span asp-for="Input.Zip">Zip</span>
+                    <input class="form-control " asp-for="Input!.Zip" type="text" placeholder="Please enter your zip code">
+                    <span class="text-danger" asp-validation-for="Input!.Zip" ></span>
+
+                </div>
+            </div>
+            <div class="row mb-2">
+               <div class="col-sm-12">
+                    <span asp-for="Input.CreditCard">Payment</span>
+                    <select data-live-search="true" data-size="5" class="selectpicker show-tick form-control" asp-for="Input.CreditCard" asp-items="@Html.GetEnumSelectList(typeof(Ebay.Pages.Checkout.IndexModel.CreditCard))"></select>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
+            @await Component.InvokeAsync("MiniCart")
+        </div>
+        <div class="text-right">
+            <a href="/Shop/Cart" class="btn btn-warning" role="button">Return to Cart</a>
+            <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Complete Order</button>
+        </div>
+    </form>
+</div>

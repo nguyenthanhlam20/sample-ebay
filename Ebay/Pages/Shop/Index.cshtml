@@ -1,0 +1,71 @@
+﻿@page
+@model Ebay.Pages.Shop.IndexModel
+@{
+    ViewData["Title"] = "Shop";
+    Layout = "_Layout";
+}
+
+<div class="mt-4 mb-3">
+    <img src="~/images/banner-7.png" class=" w-100" alt="...">
+</div>
+
+<h2 class="text-center mb-3">
+    Pick Your Favorite Products
+</h2>
+<div class="mb-4">
+    <form id="form-search" method="get">
+        <select  name="categoryId" onchange="searchProduct();" data-live-search="true" data-size="5" class="selectpicker show-tick form-control">
+            <option value="-1">All</option>
+            @if (Model.Categories != null && Model.Categories.Count > 0)
+            {
+                @foreach (var category in Model.Categories)
+                {
+                    if (Model.CategoryId == category.CategoryId)
+                    {
+                        <option selected value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@category.CategoryId">@category.CategoryName</option>
+                    }
+                }
+            }
+        </select>
+    </form>
+</div>
+
+@if (Model.Products != null && Model.Products.Count > 0)
+{
+    <div class="row">
+        @for (int i = 0; i < Model.Products.Count; i++)
+        {
+            <div class="col col-sm-3 mb-4">
+                <a href="/Shop/Product/@Model.Products[i].Id">
+                    <img class="products rounded" style="width: 100%; height: 250px; object-fit: cover;" src="@Model.Products[i].Image" alt="...">
+                </a>
+                <div style="transform: translateY(-40px); height: 0px;" class="d-flex justify-content-between mt-2 px-2">
+                    <div>
+                        <h6 class="badge badge-success">$@Model.Products[i].Price</h6>
+                    </div>
+                    <div>
+                        <h6 class="badge badge-info">@Model.Products[i].Inventory</h6>
+                    </div>
+                </div>
+                <h5 class="product-name text-center">@Model.Products[i].Name</h5>
+
+            </div>
+        }
+    </div>
+}
+else
+{
+    <h6 class="text-center text-danger mt-3">There are no products</h6>
+}
+
+<script>
+
+    function searchProduct() {
+        document.getElementById('form-search').submit();
+    }
+
+</script>

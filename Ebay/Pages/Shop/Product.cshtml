@@ -1,0 +1,45 @@
+﻿@page "{id?}"
+@using Microsoft.AspNetCore.Identity
+@using Ebay.Models
+@model Ebay.Pages.Shop.ProductModel
+@{
+    ViewData["Title"] = "Product";
+    Layout = "_Layout";
+}
+
+
+<div class="card p-3 w-100" style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; border: none;">
+    <div style="display: flex; gap: 30px;">
+        <div class="me-5">
+            <img class="detail-img rounded" src="@Model.SingleProduct!.Image" width="300" height="300" />
+        </div>
+        <div>
+            <div class="d-flex">
+                <h6>Name:&nbsp;&nbsp;</h6>
+                <p> @Model.SingleProduct.Name</p>
+            </div>
+
+            <div class="d-flex">
+                <h6 class="description">Description:&nbsp;&nbsp;</h6>
+                <p>@Model.SingleProduct.Description</p>
+            </div>
+            <div class="d-flex">
+                <h6>SKU:&nbsp;&nbsp;</h6>
+                <p> @Model.SingleProduct.Sku</p>
+            </div>
+            <div class="d-flex">
+                <h6>Price:&nbsp;&nbsp;</h6>
+                <p> $@Model.SingleProduct.Price</p>
+            </div>
+            <div class="d-flex">
+                <form method="post">
+                    <div class="d-flex align-items-baseline">
+                        <label class="mr-2" asp-for="Input!.Quantity">Quantity: </label>
+                        <input asp-for="Input!.Quantity" class="form-control" value="1" placeholder="Enter quantity" type="number" min="1" max="@Model.SingleProduct.Inventory">
+                    </div>
+                    <button class="add-to-cart-button btn btn-primary mt-3">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
