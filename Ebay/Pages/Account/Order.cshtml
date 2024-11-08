@@ -4,8 +4,6 @@
 @model Ebay.Pages.Account.OrderModel
 @{
     ViewData["Title"] = "Order";
-    Layout = "~/Pages/Shared/_Layout.cshtml";
-
     int number = Model.Orders.ToList().Count;
 }
 

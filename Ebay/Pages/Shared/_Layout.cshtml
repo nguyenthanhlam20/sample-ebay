@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="icon" href="/images/favicon.png">
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" asp-append-version="true">
     <link rel="stylesheet" href="~/lib/bootstrap-select/css/bootstrap-select.min.css" asp-append-version="true" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
 
     <title>@ViewBag.Title</title>
     <style>
@@ -39,6 +39,10 @@
         ::-webkit-scrollbar-track {
             background: #f1f1f1; /* Set the track color */
             border-radius: 10px; /* Make the track rounded */
+        }
+
+        .nav-item {
+            margin-right: 15px;
         }
     </style>
 </head>
@@ -62,8 +66,12 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/Shop">Products</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Shop/Cart">Cart</a>
+                    <li class="nav-item ">
+                        <a class="nav-link position-relative" href="/Shop/Cart">
+                            Cart
+                            <span id="cart-items" class="badge badge-info position-absolute " style="right: -12px; top: 0px;"></span>
+                        </a>
+                        
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/Checkout/History">History</a>
@@ -87,10 +95,28 @@
     </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/signalr-connection.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        window.onload = () => {
+            fetch("/cart/count").then(response => response.json())
+                .then(result => {
+                    var count = parseInt(result);
+
+                    const cartItems = document.getElementById("cart-items");
+                    if (count > 0) {
+                        cartItems.innerHTML = result;
+                        cartItems.style.display = "block";
+                    } else {
+                        cartItems.style.display = "none";
+                    }
+                });
+        };
+    </script>
 
 </body>
 </html>

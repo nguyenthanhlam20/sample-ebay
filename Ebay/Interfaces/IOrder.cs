@@ -5,7 +5,7 @@ public interface IOrder
 {
     Task SaveOrderAsync(Order order);
 
-    Task<Order> GetLatestOrderForUserAsync(string userId);
+    Task<Order?> GetLatestOrderForUserAsync(string userId);
 
     Task SaveOrderItemAsync(OrderItem orderItem);
 
@@ -18,4 +18,5 @@ public interface IOrder
     Task<IEnumerable<OrderItem>> GetOrderItemAsync();
 
     Task UpdateOrderItemAsync(OrderItem orderItems);
+    Task UpdateProductQuantityAsync(OrderItem orderItems);
 }

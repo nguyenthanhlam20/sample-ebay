@@ -1,3 +1,4 @@
+using Ebay.Hubs;
 using Ebay.Interfaces;
 using Ebay.Models;
 using Ebay.Services;
@@ -7,22 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add builder.Services to the container.
 builder.Services.AddRazorPages();
-
-builder.Services.AddControllersWithViews();
-
-builder.Services.AddScoped<IInventory, InventoryManager>();
-
-builder.Services.AddScoped<IShop, ShopManager>();
-
-builder.Services.AddScoped<IPayment, PaymentManager>();
-
-builder.Services.AddScoped<IOrder, OrderManager>();
+builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 var connectionString = builder.Configuration.GetConnectionString("DB");
 builder.Services.AddDbContext<EbayContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
+
+builder.Services.AddScoped<IInventory, InventoryManager>();
+builder.Services.AddScoped<IShop, ShopManager>();
+builder.Services.AddScoped<IPayment, PaymentManager>();
+builder.Services.AddScoped<IOrder, OrderManager>();
 
 builder.Services.AddAuthorization();
 
@@ -37,19 +35,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseStaticFiles();
 
-app.UseRouting();
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRazorPages();
-    endpoints.MapDefaultControllerRoute();
-});
+app
+    .UseAuthentication()
+    .UseRouting()
+    .UseAuthorization()
+    .UseEndpoints(r =>
+    {
+        r.MapRazorPages();
+        r.MapControllers();
+        r.MapHub<NotifyHub>("/notify-hub");
+    });
 
 app.Run();

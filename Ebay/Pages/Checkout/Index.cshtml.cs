@@ -1,17 +1,20 @@
 ﻿using AuthorizeNet.Api.Contracts.V1;
+using Ebay.Hubs;
 using Ebay.Interfaces;
 using Ebay.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using System.ComponentModel.DataAnnotations;
 
 namespace Ebay.Pages.Checkout;
 
-public class IndexModel(IShop shop, IPayment payment, IOrder order) : PageModel
+public class IndexModel(IShop shop, IPayment payment, IOrder order, IHubContext<NotifyHub> notifyHub) : PageModel
 {
     private readonly IShop _shop = shop;
     private readonly IPayment _paymnet = payment;
     private readonly IOrder _order = order;
+    private readonly IHubContext<NotifyHub> _notifyHub = notifyHub;
 
     [BindProperty]
     public CheckoutInput Input { get; set; }
@@ -49,7 +52,7 @@ public class IndexModel(IShop shop, IPayment payment, IOrder order) : PageModel
 
             foreach (var cartItem in cartItems)
             {
-                OrderItem orderItem = new OrderItem
+                var orderItem = new OrderItem
                 {
                     OrderId = order.Id,
                     ProductId = cartItem.ProductId,
@@ -63,6 +66,7 @@ public class IndexModel(IShop shop, IPayment payment, IOrder order) : PageModel
             foreach (var item in orderItems)
             {
                 await _order.SaveOrderItemAsync(item);
+                await _order.UpdateProductQuantityAsync(item);
             }
 
             string creditCardNumber;
@@ -108,6 +112,7 @@ public class IndexModel(IShop shop, IPayment payment, IOrder order) : PageModel
             if (_paymnet.Run(finalCost, creditCard, billingAdress))
             {
                 await _shop.RemoveCartItemAsync(cartItems);
+                await _notifyHub.Clients.All.SendAsync("ReloadPage");
 
                 var lastedOrder = await _order.GetLatestOrderForUserAsync("1");
                 return Redirect("/Checkout/Receipt?orderId=" + lastedOrder.Id);
